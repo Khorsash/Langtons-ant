@@ -1,3 +1,7 @@
+"""This is Langton's ant program
+You can import it to use Ant class or just modify for your needs, comments will help you :D"""
+
+
 # importing GUI modules
 import tkinter as tk
 import ctypes
