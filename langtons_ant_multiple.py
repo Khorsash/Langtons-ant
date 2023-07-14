@@ -164,8 +164,8 @@ if __name__ == "__main__":
             # if ant moved more than 2000 times
             if ants[ant] > 2000:
 
-                # and with a 1 in 4000 chance
-                if random.randint(1, 1000) == 1:
+                # and with a 1 in 4000 chance(you can change it)
+                if random.randint(1, 4000) == 1:
 
                     # new ant appears in random existing cell
                     x, y = random.choice(black_sells)
