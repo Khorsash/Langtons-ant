@@ -11,7 +11,7 @@ Files:
     - using Ant from langtons_ant.py so it works the same way
 
 - langtons_ant_optimized.py - optimized version of Langton's ant
-    - Ant - works almost like Ant from langtons_ant.py, but it's needed to have global black_sells and white_sells variables aren't used if you import it. Still no problem if you make child class and overwrite 'move' method
+    - Ant - works almost like Ant from langtons_ant.py, but it's needed to have global black_sells and white_sells variables(dicts) aren't used if you import it. Still no problem if you make child class and overwrite 'move' method
     - Also included cool features like running animation on 'Enter' key and stopping it on 'Space' key
 
 -  langtons_ant_multiple_optimized.py - version that include all good sides from langtons_ant_optimized.py. So, i don't need list 
