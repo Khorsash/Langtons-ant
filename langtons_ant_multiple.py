@@ -111,11 +111,13 @@ if __name__ == "__main__":
     # window instance
     win = tk.Tk()
 
+    win.title("Langton's ants")
+
     # make window fullscreen
     win.wm_attributes('-fullscreen', True)
 
     # you can change canvas = tk.Canvas(win, background='white') to canvas = tk.Canvas(win)
-    # and uncomment command bellow to make background transparent(looks like an ant that appears from nothing)
+    # and uncomment command bellow to make background transparent(looks like an ant that appears from nothing, tested only on Windows)
     #win.wm_attributes('-transparentcolor', win['bg'])
 
     # you can comment out win.wm_attributes('-fullscreen', True)
