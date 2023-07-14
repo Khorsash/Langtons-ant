@@ -4,14 +4,14 @@ Files:
 
 - ant.png - ant image 
 
-- langtons_ant.py - simplest and first version of Langton's ant(bad optimized)
-    - Ant - class of ant(you can import it and use everywhere, but it's needed to have global black_cells variable(list) isn't used for everething else. Also, you can create child class of it, and there will be no problem,, if you overwrite 'move' method)
+- langtons_ant.py - first and the simplest version of Langton's ant(bad optimized)
+    - Ant - class of ant(you can import it and use everywhere, but it's needed to have global black_cells variable(list) isn't used for everything else. Also, you can create child class of it, and there will be no problem, if you overwrite 'move' method)
 
 - langtons_ant_multiple.py - Multiple ants are better than only one :D
     - using Ant from langtons_ant.py so it works the same way
 
-- langtons_ant_optimized.py - optimized version of langton's ant
-    - Ant - works almost like Ant from langtons_ant.py, but it's needed global black_sells and white_sells variables aren't used if you import it. Still no problem if you make child class and overwrite 'move' method
+- langtons_ant_optimized.py - optimized version of Langton's ant
+    - Ant - works almost like Ant from langtons_ant.py, but it's needed to have global black_sells and white_sells variables aren't used if you import it. Still no problem if you make child class and overwrite 'move' method
     - Also included cool features like running animation on 'Enter' key and stopping it on 'Space' key
 
 -  langtons_ant_multiple_optimized.py - version that include all good sides from langtons_ant_optimized.py. So, i don't need list 
