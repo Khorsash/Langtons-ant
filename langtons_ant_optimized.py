@@ -258,10 +258,14 @@ if __name__ == "__main__":
         # binding 'space' key to 'make_step' function to make possibility of step-by-step animation by clicking 'space' key
         win.bind('<space>', lambda event: make_step())
 
+    def exit_program(event):
+        stop()
+        sys.exit()
+
     # start bindings
     win.bind('<Return>', start)
     win.bind('<space>', stop)
-    win.bind('<Escape>', lambda event: sys.exit())
+    win.bind('<Escape>', exit_program)
 
     # stay window exsiting
     win.mainloop()

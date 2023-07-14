@@ -276,7 +276,7 @@ if __name__ == "__main__":
 
 
     # function that starts animation
-    def stop(event):
+    def stop(event=None):
         # set 'running' as False globally(that stops animation, 'cause movement cycle is 'while running:')
         global running 
         running = False
@@ -284,10 +284,14 @@ if __name__ == "__main__":
         # binding 'space' key to 'make_step' function to make possibility of step-by-step animation by clicking 'space' key
         win.bind('<space>', lambda event: make_step())
 
+    def exit_program(event):
+        stop()
+        sys.exit()
+
     # start bindings
     win.bind('<Return>', start)
     win.bind('<space>', stop)
-    win.bind('<Escape>', lambda event: sys.exit())
+    win.bind('<Escape>', exit_program)
 
     # make window visible
     win.mainloop()
