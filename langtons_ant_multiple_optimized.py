@@ -237,23 +237,20 @@ if __name__ == "__main__":
                 iterations = ants[ant] + 1
                 ants[ant] = iterations
 
-                # if ant moved more than 2000 times
-                if ants[ant] > 2000:
-
-                    # and with a 1 in 4000 chance(you can change it)
-                    if random.randint(1, 4000) == 1:
-
-                        # new ant appears in random existing cell
-                        x, y = random.choice(list(black_sells.values())+list(white_cells.values()))
-
-                        # new ant inctance
-                        new_ant = RandomDirectionAnt(canvas, (x, y), i)
-
-                        # adding ant to dict
-                        ants[new_ant] = 1
-
                 # updating window to see changes
                 win.update()
+
+        # with a 1 in 2000 chance(you can change it)
+        if random.randint(1, 2000) == 1:
+
+            # new ant appears in random existing cell
+            x, y = random.choice(list(black_sells.values())+list(white_cells.values()))
+
+            # new ant inctance
+            new_ant = RandomDirectionAnt(canvas, (x, y), i)
+
+            # adding ant to dict
+            ants[new_ant] = 1
 
 
     # function that starts animation
