@@ -250,7 +250,7 @@ if __name__ == "__main__":
 
 
     # function that starts animation
-    def stop(event):
+    def stop(event=None):
         # set 'running' as False globally(that stops animation, 'cause movement cycle is 'while running:')
         global running 
         running = False
