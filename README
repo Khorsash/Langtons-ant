@@ -1,23 +1,28 @@
-This is Langton's ant repository
+This is a repo of my implementation of Langton's ant algorithm
 
 Files:
 
-- ant.png - ant image 
+- ant.png - used as ant image 
 
-- langtons_ant.py - first and the simplest version of Langton's ant(bad optimized)
-    - Ant - class of ant(you can import it and use everywhere, but it's needed to have global black_cells variable(list) isn't used for everything else. Also, you can create child class of it, and there will be no problem, if you overwrite 'move' method)
+- langtons_ant.py - the first and the simplest version of 
+    Langton's ant(badly optimized)
+    - If you want Ant class, it's nessesary to have
+     global black_cells variable(list)
 
-- langtons_ant_multiple.py - Multiple ants are better than only one :D
+- langtons_ant_multiple.py - Many ants are better than only one :D
     - using Ant from langtons_ant.py so it works the same way
 
 - langtons_ant_optimized.py - optimized version of Langton's ant
-    - Ant - works almost like Ant from langtons_ant.py, but it's needed to have global black_sells and white_sells variables(dicts) aren't used if you import it. Still no problem if you make child class and overwrite 'move' method
-    - Also included cool features like running animation on 'Enter' key and stopping it on 'Space' key
+    - Ant - works almost like Ant from langtons_ant.py. 
+    If you want to import it, it's nessesary to have
+     global black_sells and white_sells variables(dicts).
+    You also make Ant child class and overwrite 'move' method.
+    - Also included cool features like running animation on 'Enter' key
+     and stopping it on 'Space' key
 
--  langtons_ant_multiple_optimized.py - version that include all good sides from langtons_ant_optimized.py. So, i don't need list 
-    them again (Horray!)
+-  langtons_ant_multiple_optimized.py - version that includes
+ all good sides from langtons_ant_optimized.py.
 
 Also, .py files contain comments, read them for better understanding
 
-
-Thanks you for reading this!
+Thank you for reading this!
