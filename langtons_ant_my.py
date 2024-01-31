@@ -8,9 +8,9 @@ import ctypes
 
 # importing backend modules
 import platform
+import sys
 import time
 import random
-import sys
 
 
 # Windows right resolution setup
@@ -21,9 +21,6 @@ if platform.system() == 'Windows':
 # dicts that contain coordinates of black and white sells
 black_sells = {}
 white_cells = {}
-
-
-running = True
 
 
 # Ant type definition
@@ -58,6 +55,7 @@ class Ant:
 
         # ant canvas object
         self.id = self.canvas.create_image(self.x, self.y, image=self.ant_image, anchor='nw')
+        #self.id = self.canvas.create_rectangle(self.x, self.y, self.x+self.unit, self.y+self.unit, fill='red')
 
     # Method for ant movement
     def move(self):
@@ -103,9 +101,9 @@ class Ant:
                     return
                 
         elif coords in white_cells.values():
+
             # if ant on white sell
             # we're trying to find id of it
-
             for id in white_cells:
                 if white_cells[id] == coords:
 
@@ -120,7 +118,7 @@ class Ant:
 
                     # turning ant right
                     self.direction = self.turn_right[self.direction]
-                    
+
                     # moving ant
                     if self.direction == 'up':
                         self.canvas.move(self.id, 0, self.unit*-1)
@@ -176,32 +174,27 @@ class RandomDirectionAnt(Ant):
         super().__init__(canvas, coords, image, direction=random.choice(['up', 'down', 'right', 'left']))
 
 
-
-
 # start program if file isn't imported but runned  
 if __name__ == "__main__":
 
     # window instance
     win = tk.Tk()
 
-    win.title("Langton's ants")
-
-    win['bg'] = 'grey'
+    win.title("Langton's ant")
 
     # make window fullscreen
-    win.wm_attributes('-fullscreen', True)
+    #win.wm_attributes('-fullscreen', True)
 
     # you can change canvas = tk.Canvas(win, background='white') to canvas = tk.Canvas(win)
     # and uncomment command bellow to make background transparent(looks like an ant that appears from nothing, tested only on Windows)
     #win.wm_attributes('-transparentcolor', win['bg'])
-    win.wm_attributes('-transparentcolor', 'grey')
 
     # you can comment out win.wm_attributes('-fullscreen', True)
     # and uncomment command bellow to make window not fullscreen 
     #win.geometry("1000x800")
 
     # canvas instance
-    canvas = tk.Canvas(win, background='grey')
+    canvas = tk.Canvas(win, background='white')
     canvas.pack(expand=True, fill='both')
 
     # update canvas to get its size and center
@@ -221,38 +214,23 @@ if __name__ == "__main__":
     # making ant image object
     i = tk.PhotoImage(file='ant.png')
 
-    # first Ant instance
-    ant = RandomDirectionAnt(canvas, (x, y), i)
-    
-    # dict of ants as keys and count of their steps as values
-    ants = {ant:0}
+    win.iconphoto(False, i)
 
-    # function that moves all ants
+    # Ant instance
+    ant = Ant(canvas, (x, y), i, 'up')
+
+    iterations = 0
+
     def make_step():
-        # ants' cycle
-        for ant in list(ants.keys())[:]:
-                
-                # moving ant
-                ant.move()
+        global iterations
+        # moving ant
+        ant.move()
 
-                # adding step for current ant
-                iterations = ants[ant] + 1
-                ants[ant] = iterations
+        # adding iteration
+        iterations += 1
 
-                # updating window to see changes
-                win.update()
-
-        # with a 1 in 2000 chance(you can change it)
-        if random.randint(1, 2000) == 1:
-
-            # new ant appears in random existing cell
-            x, y = random.choice(list(black_sells.values())+list(white_cells.values()))
-
-            # new ant inctance
-            new_ant = RandomDirectionAnt(canvas, (x, y), i)
-
-            # adding ant to dict
-            ants[new_ant] = 1
+        # updating window to see changes
+        win.update()
 
 
     # function that starts animation
@@ -264,18 +242,18 @@ if __name__ == "__main__":
         # binding 'space' key to 'stop' function
         win.bind('<space>', stop)
 
-        # starting ants' movement cycle
+        # starting ant movement cycle
         while running:
 
-            # moving all ants
+            # moving ant
             make_step()
-
+            
             # delay for more smooth animation
             time.sleep(0.001)
 
 
     # function that starts animation
-    def stop(event=None):
+    def stop(event):
         # set 'running' as False globally(that stops animation, 'cause movement cycle is 'while running:')
         global running 
         running = False
@@ -283,14 +261,10 @@ if __name__ == "__main__":
         # binding 'space' key to 'make_step' function to make possibility of step-by-step animation by clicking 'space' key
         win.bind('<space>', lambda event: make_step())
 
-    def exit_program(event):
-        stop()
-        sys.exit()
-
     # start bindings
     win.bind('<Return>', start)
     win.bind('<space>', stop)
-    win.bind('<Escape>', exit_program)
+    win.bind('<Escape>', lambda event: sys.exit())
 
-    # make window visible
+    # stay window exsiting
     win.mainloop()

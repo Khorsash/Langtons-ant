@@ -21,6 +21,7 @@ if platform.system() == 'Windows':
 # dicts that contain coordinates of black and white sells
 black_sells = {}
 white_cells = {}
+grey_cells = {}
 
 
 running = True
@@ -47,6 +48,7 @@ class Ant:
         self.x, self.y = coords
         self.unit = unit
         self.direction = direction
+        self.previos_cell_color = None
         #print(self.direction)
 
         # direction changers
@@ -81,6 +83,8 @@ class Ant:
                     # adding that cell to white_sells
                     white_cells[id] = coords
 
+                    self.previos_cell_color = 'black'
+
                     # turning ant left
                     self.direction = self.turn_left[self.direction]
 
@@ -102,21 +106,23 @@ class Ant:
                     self.canvas.lift(self.id)
                     return
                 
-        elif coords in white_cells.values():
+        elif coords in list(white_cells.values()):
             # if ant on white sell
             # we're trying to find id of it
 
             for id in white_cells:
                 if white_cells[id] == coords:
 
-                    # filling white cell with black
-                    self.canvas.itemconfig(id, fill='black')
+                    # filling white cell with grey
+                    self.canvas.itemconfig(id, fill='grey') 
 
                     # deleting that cell from white_sells
                     del white_cells[id]
 
-                    # adding that cell to black_sells
-                    black_sells[id] = coords
+                    # adding that cell to grey_sells
+                    grey_cells[id] = coords
+
+                    self.previos_cell_color = 'white'
 
                     # turning ant right
                     self.direction = self.turn_right[self.direction]
@@ -138,13 +144,58 @@ class Ant:
                     # showing ant
                     self.canvas.lift(self.id)
                     return
+                
+        elif coords in list(grey_cells.values()):
+            # if ant on white sell
+            # we're trying to find id of it
+
+            for id in grey_cells:
+                if grey_cells[id] == coords:
+
+                    # filling white cell with black
+                    self.canvas.itemconfig(id, fill='black')
+
+                    # deleting that cell from grey_sells
+                    del grey_cells[id]
+
+                    # adding that cell to black_sells
+                    black_sells[id] = coords
+
+                    if self.previos_cell_color == 'white':  
+
+                        # turning ant right
+                        self.direction = self.turn_right[self.direction]
+                    elif self.previos_cell_color == 'black':
+
+                        # turning ant right
+                        self.direction = self.turn_left[self.direction]
+
+                    self.previos_cell_color = 'grey'
+
+                    # moving ant
+                    if self.direction == 'up':
+                        self.canvas.move(self.id, 0, self.unit*-1)
+                        self.y += self.unit*-1
+                    elif self.direction == 'down':
+                        self.canvas.move(self.id, 0, self.unit)
+                        self.y += self.unit
+                    elif self.direction == 'right':
+                        self.canvas.move(self.id, self.unit, 0)
+                        self.x += self.unit
+                    elif self.direction == 'left':
+                        self.canvas.move(self.id, self.unit*-1, 0)
+                        self.x += self.unit*-1
+
+                    # showing ant
+                    self.canvas.lift(self.id)
+                    return
 
         else:
-            # creating black cell
-            id = self.canvas.create_rectangle(self.x, self.y, self.x+self.unit, self.y+self.unit, fill='black')
+            # creating grey cell
+            id = self.canvas.create_rectangle(self.x, self.y, self.x+self.unit, self.y+self.unit, fill='grey')
 
-            # adding that cell to black_sells
-            black_sells[id] = coords
+            # adding that cell to grey_sells
+            grey_cells[id] = coords
 
             # turning ant right
             self.direction = self.turn_right[self.direction]
@@ -186,22 +237,20 @@ if __name__ == "__main__":
 
     win.title("Langton's ants")
 
-    win['bg'] = 'grey'
-
     # make window fullscreen
     win.wm_attributes('-fullscreen', True)
 
     # you can change canvas = tk.Canvas(win, background='white') to canvas = tk.Canvas(win)
     # and uncomment command bellow to make background transparent(looks like an ant that appears from nothing, tested only on Windows)
     #win.wm_attributes('-transparentcolor', win['bg'])
-    win.wm_attributes('-transparentcolor', 'grey')
+    #win.wm_attributes('-transparentcolor', 'black')
 
     # you can comment out win.wm_attributes('-fullscreen', True)
     # and uncomment command bellow to make window not fullscreen 
     #win.geometry("1000x800")
 
     # canvas instance
-    canvas = tk.Canvas(win, background='grey')
+    canvas = tk.Canvas(win, background='white')
     canvas.pack(expand=True, fill='both')
 
     # update canvas to get its size and center
@@ -226,9 +275,10 @@ if __name__ == "__main__":
     
     # dict of ants as keys and count of their steps as values
     ants = {ant:0}
+    print('Ants: ', len(list(ants.keys())))
 
     # function that moves all ants
-    def make_step():
+    def make_step(event=None):
         # ants' cycle
         for ant in list(ants.keys())[:]:
                 
@@ -243,20 +293,24 @@ if __name__ == "__main__":
                 win.update()
 
         # with a 1 in 2000 chance(you can change it)
-        if random.randint(1, 2000) == 1:
+        if random.randint(1, 3000) == 1:
 
-            # new ant appears in random existing cell
-            x, y = random.choice(list(black_sells.values())+list(white_cells.values()))
+            add_random_ant()
 
-            # new ant inctance
-            new_ant = RandomDirectionAnt(canvas, (x, y), i)
+    def add_random_ant(event=None):
+        # new ant appears in random existing cell
+        x, y = random.choice(list(black_sells.values())+list(white_cells.values()))
 
-            # adding ant to dict
-            ants[new_ant] = 1
+        # new ant inctance
+        new_ant = RandomDirectionAnt(canvas, (x, y), i)
 
+        # adding ant to dict
+        ants[new_ant] = 1
+
+        print('Ants: ', len(list(ants.keys())))
 
     # function that starts animation
-    def start(event):
+    def start(event=None):
         # set 'running' as True globally
         global running
         running = True
@@ -282,15 +336,17 @@ if __name__ == "__main__":
 
         # binding 'space' key to 'make_step' function to make possibility of step-by-step animation by clicking 'space' key
         win.bind('<space>', lambda event: make_step())
+    
 
-    def exit_program(event):
+    def exit_program(event=None):
         stop()
         sys.exit()
 
     # start bindings
     win.bind('<Return>', start)
-    win.bind('<space>', stop)
-    win.bind('<Escape>', exit_program)
+    win.bind('<space>', make_step)
+    win.bind('<Escape>', exit_program)  
+    win.bind('a', add_random_ant)
 
     # make window visible
     win.mainloop()
